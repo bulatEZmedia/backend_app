@@ -9,7 +9,7 @@ db = SqliteDatabase("db/database.db")
 app = FastAPI()
 
 with db:
-    db.create_tables([User, Team])
+    db.create_tables([User, Team, Task])
 
     '''@app.post("/check_user")
     async def check_user(email: str):
@@ -36,11 +36,17 @@ with db:
         User.insert_many(register).execute()
 
     @app.post("/create_task")
-    def create_task(name: str, level_count: int, description: str, location: str, status: int):
+    def create_task(name: str, level_count: int, description: str, location: str):
         task = [
-            {"name": name, "level_count": level_count, "description": description, "location": location, "status": status}
+            {"name": name, "level_count": level_count, "description": description, "location": location}
         ]
         Task.insert_many(task).execute()
+
+    @app.post("/change_status")
+    def change_status1(id_task: int, status: int):
+        q = Task.update({Task.status: status}).where(Task.id == id_task)
+        q.execute()
+        return "DONE"
 
     '''@app.post("/files/")
     async def create_file(file: Annotated[bytes, File()]):

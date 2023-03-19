@@ -19,19 +19,20 @@ class User(BaseModel):
     password = CharField()
     level = CharField()
 
-
     class Meta:
         db_table = 'users'
+
 
 class Task(BaseModel):
     name = CharField()
     level_count = IntegerField()
     description = CharField()
     location = CharField()
-    status = IntegerField(default=0 or 1 or 2)
+    status = IntegerField(default=0)
 
     class Meta:
         db_table = 'tasks'
+
 
 class Team(BaseModel):
     name = CharField()
