@@ -48,6 +48,12 @@ with db:
         q.execute()
         return "DONE"
 
+    @app.get("/get_alltasks")
+    def get_all_task():
+        q = Task.select(Task).execute()
+
+
+
     '''@app.post("/files/")
     async def create_file(file: Annotated[bytes, File()]):
         return {"file_size": len(file)}

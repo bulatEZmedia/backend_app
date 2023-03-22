@@ -17,7 +17,7 @@ class User(BaseModel):
     surname = CharField()
     email = CharField(unique=True)
     password = CharField()
-    level = CharField()
+    level = IntegerField(default=0)
 
     class Meta:
         db_table = 'users'
