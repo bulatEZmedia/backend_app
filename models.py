@@ -11,6 +11,12 @@ class BaseModel(Model):
         order_by = 'id'
 
 
+class Team(BaseModel):
+    name = CharField()
+    participants = CharField()
+
+    class Meta:
+        db_table = 'teams'
 class User(BaseModel):
     username = CharField(unique=True)
     name = CharField()
@@ -18,7 +24,6 @@ class User(BaseModel):
     email = CharField(unique=True)
     password = CharField()
     level = IntegerField(default=0)
-
     class Meta:
         db_table = 'users'
 
@@ -34,9 +39,3 @@ class Task(BaseModel):
         db_table = 'tasks'
 
 
-class Team(BaseModel):
-    name = CharField()
-    user_id = ForeignKeyField(User)
-
-    class Meta:
-        db_table = 'teams'

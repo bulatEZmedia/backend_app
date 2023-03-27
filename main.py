@@ -9,7 +9,7 @@ db = SqliteDatabase("db/database.db")
 app = FastAPI()
 
 with db:
-    db.create_tables([User, Team, Task])
+    db.create_tables([Team, User, Task])
 
     '''@app.post("/check_user")
     async def check_user(email: str):
@@ -21,7 +21,9 @@ with db:
     def authorization(email: str, password: str):
         if User.select().where(User.email == email):
             if User.select().where(User.password == password):
-                return "DONE"
+                for user in User.select().where(User.password == password):
+                    return "DONE", user
+
             else:
                 return "the password is incorrect"
         else:
@@ -48,9 +50,26 @@ with db:
         q.execute()
         return "DONE"
 
+
     @app.get("/get_alltasks")
     def get_all_task():
-        q = Task.select(Task).execute()
+        return list(Task.select())
+
+
+    @app.post("/create_team")
+    def check_level(level: int):
+        if level >= 5:
+            def create_team(name: str):
+
+                team = [
+                    {"name": name} # !!! need to add a list of team members
+                ]
+                Team.insert_many(team).execute()
+        else:
+            return "sorry, the team can be created from 5 level"
+
+
+
 
 
 
