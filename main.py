@@ -17,6 +17,8 @@ with db:
         all_email = [user.email for user in users]
     '''
 
+    #USER
+
     @app.post("/authorization")
     def authorization(email: str, password: str):
         if User.select().where(User.email == email):
@@ -36,6 +38,11 @@ with db:
              "level": 1}
         ]
         User.insert_many(register).execute()
+        return "DONE"
+
+
+
+    #TASK
 
     @app.post("/create_task")
     def create_task(name: str, level_count: int, description: str, location: str):
@@ -56,6 +63,8 @@ with db:
         return list(Task.select())
 
 
+    #TEAM
+
     @app.post("/create_team")
     def check_level(level: int):
         if level >= 5:
@@ -68,8 +77,46 @@ with db:
         else:
             return "sorry, the team can be created from 5 level"
 
+    @app.get("/get_allteams")
+    def get_all_teams():
+        return list(Team.select())
 
 
+    #CHECK TASK(FOR ADMIN)
+
+    @app.post("/response_task")
+    def response_task(descriprion: str, task: list, user: list):
+        check_task = [
+            {"descriprion": descriprion, "task": task, "user": user}
+        ]
+        Team.insert_many(check_task).execute()
+
+
+    @app.get("/get_allchecktasks")
+    def get_all_check_task():
+        return list(Check_Task.select())
+
+
+
+    # USER_PROFILE
+
+    @app.post("/get_user_profile")
+    def get_user_profile(user_id: int):
+        return list(User.select().where(User.id == user_id))
+
+
+    #PLAY
+
+    @app.post("/get_user_level")
+    def get_user_level(user_id: int):
+        for user in User.select().where(User.id == user_id):
+            return user.level
+
+
+    @app.post("/change_level")
+    def change_level(user_id: int):
+        q = User.update({User.level: User.level + 1}).where(User.id == user_id)
+        q.execute()
 
 
 

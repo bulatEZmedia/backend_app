@@ -17,6 +17,8 @@ class Team(BaseModel):
 
     class Meta:
         db_table = 'teams'
+
+
 class User(BaseModel):
     username = CharField(unique=True)
     name = CharField()
@@ -38,4 +40,12 @@ class Task(BaseModel):
     class Meta:
         db_table = 'tasks'
 
+
+class Check_Task(BaseModel):
+    descriprion = CharField()
+    task = CharField()
+    user = CharField()
+
+    class Meta:
+        db_table = "check_task"
 
