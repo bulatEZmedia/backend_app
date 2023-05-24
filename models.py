@@ -14,6 +14,8 @@ class BaseModel(Model):
 class Team(BaseModel):
     name = CharField()
     participants = CharField()
+    description = CharField()
+    userId = IntegerField()
 
     class Meta:
         db_table = 'teams'
@@ -25,10 +27,10 @@ class User(BaseModel):
     surname = CharField()
     email = CharField(unique=True)
     password = CharField()
-    level = IntegerField(default=0)
+    level = IntegerField()
+    xp = IntegerField(default=0)
     class Meta:
         db_table = 'users'
-
 
 class Task(BaseModel):
     name = CharField()
@@ -36,16 +38,22 @@ class Task(BaseModel):
     description = CharField()
     location = CharField()
     status = IntegerField(default=0)
-
     class Meta:
         db_table = 'tasks'
 
-
 class Check_Task(BaseModel):
-    descriprion = CharField()
-    task = CharField()
-    user = CharField()
+    offer = CharField()
+    taskId = IntegerField()
+    userId = IntegerField()
 
     class Meta:
         db_table = "check_task"
+
+class Check_Team(BaseModel):
+    offer = CharField()
+    teamId = IntegerField()
+    userId = IntegerField()
+    class Meta:
+        db_table = "checkInviteToTeam"
+
 
