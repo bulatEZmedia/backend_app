@@ -6,7 +6,7 @@ import pydantic
 from playhouse.shortcuts import model_to_dict
 from models import *
 
-
+import re
 class TaskResponse(pydantic.BaseModel):
     id: int
     name: str
@@ -61,11 +61,16 @@ with db:
 
     @app.post("/register")
     def register(username: str, name: str, surname: str, email: str, password: str):
-        register = [
-            {"username": username, "name": name, "surname": surname, "email": email, "password": password,
-             "level": 1}
-        ]
-        return model_to_dict(User.insert_many(register).returning(User.id).execute()[0])['id']
+        pattern = "^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$"
+        match = re.fullmatch(pattern, email)
+        if match:
+            register = [
+                 {"username": username, "name": name, "surname": surname, "email": email, "password": password,
+                    "level": 1}
+            ]
+            return model_to_dict(User.insert_many(register).returning(User.id).execute()[0])['id']
+        else:
+            return 0
 
 
     @app.get("/hello")
